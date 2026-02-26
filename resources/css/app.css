@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+
+/* Blikajúca textová kurzora (caret) len v poliach na písanie */
+* {
+  caret-color: transparent;
+}
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+[contenteditable="true"] {
+  caret-color: auto;
+}
+
+/* Všetky tlačidlá majú cursor pointer */
+button,
+[role="button"],
+a.btn-primary,
+a.btn-secondary,
+a.btn-ghost,
+a.btn-danger-ghost,
+a.pagination-btn {
+  cursor: pointer;
+}
+
+@theme {
+  /* Primary (teal) palette */
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+}
+
+@layer components {
+  .btn-primary {
+    @apply cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-700 hover:shadow-md active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply cursor-pointer inline-flex items-center justify-center rounded-lg border border-primary-200 bg-primary-50/80 px-3 py-2 text-sm font-medium text-primary-700 transition-all duration-200 hover:border-primary-300 hover:bg-primary-100 hover:text-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-500;
+  }
+  .btn-danger-ghost {
+    @apply cursor-pointer inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-sm font-medium text-red-700 transition-all duration-200 hover:border-red-300 hover:bg-red-100 hover:text-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-red-500;
+  }
+  .pagination-btn {
+    @apply cursor-pointer inline-flex min-w-[2.25rem] items-center justify-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200;
+  }
+  .pagination-btn-active {
+    @apply bg-primary-600 text-white shadow-sm hover:bg-primary-700;
+  }
+  .pagination-btn-inactive {
+    @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+  }
+  .input-field {
+    @apply block w-full rounded-xl border border-slate-300 shadow-xs transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20;
+  }
+  .card {
+    @apply rounded-2xl border border-slate-200/80 bg-white;
+    box-shadow: var(--shadow-card);
+  }
+  .page-title {
+    @apply text-2xl font-bold tracking-tight text-slate-900;
+  }
+}

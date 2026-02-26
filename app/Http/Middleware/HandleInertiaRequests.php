@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Models\ReportUnlockRequest;
+use Illuminate\Http\Request;
+use Inertia\Middleware;
+
+class HandleInertiaRequests extends Middleware
+{
+    /**
+     * The root template that's loaded on the first page visit.
+     *
+     * @see https://inertiajs.com/server-side-setup#root-template
+     *
+     * @var string
+     */
+    protected $rootView = 'app';
+
+    /**
+     * Determines the current asset version.
+     *
+     * @see https://inertiajs.com/asset-versioning
+     */
+    public function version(Request $request): ?string
+    {
+        return parent::version($request);
+    }
+
+    /**
+     * Define the props that are shared by default.
+     *
+     * @see https://inertiajs.com/shared-data
+     *
+     * @return array<string, mixed>
+     */
+    public function share(Request $request): array
+    {
+        $user = $request->user();
+        $pendingUnlockRequestsCount = $user && $user->is_admin
+            ? ReportUnlockRequest::where('status', 'pending')->count()
+            : 0;
+        $unreadNotificationsCount = $user ? $user->unreadNotifications()->count() : 0;
+
+        return [
+            ...parent::share($request),
+            'auth' => [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar_path' => $user->avatar_path,
+                    'avatar_url' => $user->avatar_path ? '/storage/'.$user->avatar_path : null,
+                    'is_admin' => $user->is_admin,
+                ] : null,
+            ],
+            'pendingUnlockRequestsCount' => $pendingUnlockRequestsCount,
+            'unreadNotificationsCount' => $unreadNotificationsCount,
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+                'info' => fn () => $request->session()->get('info'),
+                'status' => fn () => $request->session()->get('status'),
+            ],
+        ];
+    }
+}

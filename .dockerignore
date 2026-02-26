@@ -1,0 +1,14 @@
+/node_modules
+/public/hot
+/public/build
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+.git
+.gitignore
+*.md
+Dockerfile
+docker-compose*.yml
+.dockerignore
